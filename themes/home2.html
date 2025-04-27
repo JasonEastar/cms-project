@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content=" Meta - Giải pháp  toàn cầu với công nghệ tiên tiến, cung cấp dịch vụ vận tải biển, kho bãi, và quản lý chuỗi cung ứng.">
+  <meta name="keywords" content=", vận tải biển, kho bãi, chuỗi cung ứng, vận chuyển quốc tế,  toàn cầu">
+  <meta name="author" content=" Meta">
+  <title> Meta - Giải pháp  Toàn cầu</title>
+
+  <!-- SEO: Hreflang cho đa ngôn ngữ -->
+  <link rel="alternate" hreflang="vi" href="https://meta.com/vi/" />
+  <link rel="alternate" hreflang="en" href="https://meta.com/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://meta.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content=" Meta - Giải pháp  Toàn cầu">
+  <meta property="og:description" content="Dịch vụ vận tải biển, kho bãi, và quản lý chuỗi cung ứng với công nghệ tiên tiến.">
+  <meta property="og:image" content="https://meta.com/og-image.webp">
+  <meta property="og:url" content="https://meta.com/">
+  <meta property="og:type" content="website">
+
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": " Meta",
+    "url": "https://meta.com",
+    "logo": "https://meta.com/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+84-123-456-789",
+      "contactType": "Customer Service",
+      "email": "contact@meta.com"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "123 Đường ",
+      "addressLocality": "TP.HCM",
+      "addressCountry": "VN"
+    }
+  }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- Preload Hero Image và Font -->
+  <link rel="preload" href="https://meta.com/hero-sea-port.webp" as="image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Framer Motion CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.16.4/motion.umd.min.js"></script>
+
+  <!-- Vanilla Tilt for 3D effects -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+
+  <!-- Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Smooth Scroll Polyfill -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+      @apply bg-gray-50;
+    }
+    img {
+      loading: lazy;
+    }
+    .hero-bg {
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      @apply transition-transform duration-700 ease-in-out;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #0077B6, #00B4D8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .holo-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 180, 216, 0.3);
+      transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out, border 0.3s ease-in-out;
+    }
+    .holo-card:hover {
+      transform: translateY(-10px) rotate(2deg);
+      box-shadow: 0 20px 40px rgba(0, 180, 216, 0.2);
+      border: 1px solid rgba(0, 180, 216, 0.8);
+    }
+    .btn-glow {
+      background: linear-gradient(90deg, #0077B6, #00B4D8);
+      transition: background 0.5s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .btn-glow:hover {
+      background: linear-gradient(90deg, #00B4D8, #0077B6);
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+    }
+    .wave-overlay {
+      background: url('data:image/svg+xml,%3Csvg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath fill="rgba(255,255,255,0.2)" fill-opacity="1" d="M0,128L48,138.7C96,149,192,171,288,170.7C384,171,480,149,576,144C672,139,768,149,864,160C960,171,1056,181,1152,181.3C1248,181,1344,171,1392,165.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') repeat-x bottom;
+    }
+    .stack-card {
+      transition: transform 0.5s ease-in-out, z-index 0.5s ease-in-out;
+      position: relative;
+      z-index: 1;
+    }
+    .stack-card:hover {
+      transform: translateY(-20px) rotate(5deg);
+      z-index: 10;
+    }
+    .polaroid {
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transform: rotate(-2deg);
+      transition: transform 0.5s ease-in-out;
+    }
+    .polaroid:hover {
+      transform: rotate(0deg);
+    }
+    .bio-panel {
+      transform: translateY(100%);
+      transition: transform 0.5s ease-in-out;
+    }
+    .polaroid:hover .bio-panel {
+      transform: translateY(0);
+    }
+    .orb {
+      background: radial-gradient(circle, rgba(0, 180, 216, 0.5) 0%, transparent 70%);
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 0.5; }
+    }
+    .hexagon {
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+    }
+    .hexagon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+    }
+    .map-bg {
+      background: url('https://meta.com/map-bg.webp') no-repeat center/cover;
+      opacity: 0.2;
+    }
+    .pin {
+      transition: transform 0.3s ease-in-out;
+    }
+    .pin:hover {
+      transform: scale(1.2);
+    }
+    @media (max-width: 640px) {
+      .motion-div {
+        transition-duration: 0.3s !important;
+      }
+      .hero-bg {
+        background-attachment: scroll;
+      }
+      .holo-card:hover {
+        transform: translateY(-5px);
+      }
+      .stack-card:hover {
+        transform: translateY(-10px);
+      }
+    }
+    #preloader {
+      background: #0077B6 url('https://meta.com/loader.gif') no-repeat center;
+      background-size: 100px;
+      height: 100vh;
+      width: 100%;
+      position: fixed;
+      z-index: 100;
+    }
+    .ship-animation {
+      animation: sail 20s linear infinite;
+    }
+    @keyframes sail {
+      0% { transform: translateX(-100%) rotateY(0deg); }
+      50% { transform: translateX(100%) rotateY(180deg); }
+      100% { transform: translateX(-100%) rotateY(0deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Header -->
+  <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-lg shadow-sm z-50">
+    <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="/" class="text-3xl font-bold gradient-text"> Meta</a>
+      <div class="flex items-center space-x-6">
+        <ul class="hidden md:flex space-x-8">
+          <li><a href="#home" class="text-gray-700 hover:text-blue-600 transition ease-in-out duration-300">Trang chủ</a></li>
+          <li><a href="#services" class="text-gray-700 hover:text-blue-600 transition ease-in-out duration-300">Dịch vụ</a></li>
+          <li><a href="#about" class="text-gray-700 hover:text-blue-600 transition ease-in-out duration-300">Giới thiệu</a></li>
+          <li><a href="#case-studies" class="text-gray-700 hover:text-blue-600 transition ease-in-out duration-300">Dự án</a></li>
+          <li><a href="#contact" class="text-gray-700 hover:text-blue-600 transition ease-in-out duration-300">Liên hệ</a></li>
+        </ul>
+        <select id="language" class="border rounded-lg px-3 py-1 bg-blue-50 text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <option value="vi">Tiếng Việt</option>
+          <option value="en">English</option>
+        </select>
+        <button id="mobile-menu-toggle" class="md:hidden focus:outline-none">
+          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-md">
+      <ul class="flex flex-col space-y-4 p-4">
+        <li><a href="#home" class="text-gray-700 hover:text-blue-600">Trang chủ</a></li>
+        <li><a href="#services" class="text-gray-700 hover:text-blue-600">Dịch vụ</a></li>
+        <li><a href="#about" class="text-gray-700 hover:text-blue-600">Giới thiệu</a></li>
+        <li><a href="#case-studies" class="text-gray-700 hover:text-blue-600">Dự án</a></li>
+        <li><a href="#contact" class="text-gray-700 hover:text-blue-600">Liên hệ</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="relative h-screen hero-bg wave-overlay" style="background-image: url('https://meta.com/hero-sea-port.webp')">
+    <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-blue-600/40 flex items-center justify-center">
+      <div class="text-center text-white px-4 max-w-4xl">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 gradient-text motion-div" data-motion="fadeIn">Khám phá tương lai </h1>
+        <p class="text-lg md:text-xl mb-6 motion-div" data-motion="fadeIn" data-delay="0.2"> Meta tiên phong với giải pháp vận tải biển, kho bãi, và chuỗi cung ứng thông minh.</p>
+        <a href="#services" class="inline-block btn-glow text-white px-8 py-3 rounded-full shadow-lg motion-div" data-motion="fadeIn" data-delay="0.4">Bắt đầu ngay</a>
+      </div>
+      <div class="absolute bottom-20 left-0 w-32 h-16 bg-contain bg-no-repeat ship-animation" style="background-image: url('https://meta.com/ship-icon.webp'); perspective: 1000px;"></div>
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-[lensFlare_5s_ease-in-out_infinite]"></div>
+  </section>
+
+  <!-- News Section -->
+  <section id="news" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Tin tức nổi bật</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        <div class="motion-div holo-card p-6 rounded-xl shadow-lg stack-card" data-motion="fadeIn">
+          <img src="https://meta.com/news1.webp" alt="Mở tuyến vận tải mới châu Âu" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Tuyến vận tải mới</h3>
+          <p class="text-gray-600">Tăng tốc giao hàng châu Âu với thời gian rút ngắn 30%.</p>
+        </div>
+        <div class="motion-div holo-card p-6 rounded-xl shadow-lg stack-card" data-motion="fadeIn" data-delay="0.2">
+          <img src="https://meta.com/news2.webp" alt="Công nghệ AI trong " class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">AI trong </h3>
+          <p class="text-gray-600">Tối ưu kho bãi với công nghệ AI tiên tiến.</p>
+        </div>
+        <div class="motion-div holo-card p-6 rounded-xl shadow-lg stack-card" data-motion="fadeIn" data-delay="0.4">
+          <img src="https://meta.com/news3.webp" alt="Hợp tác với đối tác toàn cầu" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Hợp tác toàn cầu</h3>
+          <p class="text-gray-600">Ký kết với các tập đoàn  hàng đầu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Dịch vụ của chúng tôi</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="motion-div holo-card p-6 rounded-xl shadow-lg tilt-card" data-motion="slideUp">
+          <img src="https://meta.com/service1.webp" alt="Vận tải biển quốc tế" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Vận tải biển quốc tế</h3>
+          <p class="text-gray-600">Giao hàng đến 50+ quốc gia với độ tin cậy cao.</p>
+        </div>
+        <div class="motion-div holo-card p-6 rounded-xl shadow-lg tilt-card" data-motion="slideUp" data-delay="0.2">
+          <img src="https://meta.com/service2.webp" alt="Quản lý kho bãi" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Quản lý kho bãi</h3>
+          <p class="text-gray-600">Kho thông minh với tự động hóa và theo dõi thực.</p>
+        </div>
+        <div class="motion-div holo-card p-6 rounded-xl shadow-lg tilt-card" data-motion="slideUp" data-delay="0.4">
+          <img src="https://meta.com/service3.webp" alt="Chuỗi cung ứng toàn cầu" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Chuỗi cung ứng toàn cầu</h3>
+          <p class="text-gray-600">Tối ưu chuỗi cung ứng với giải pháp bền vững.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Studies Section -->
+  <section id="case-studies" class="py-20 bg-gradient-to-b from-blue-50 to-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Dự án tiêu biểu</h2>
+      <div class="relative">
+        <div class="absolute left-1/2 -translate-x-1/2 w-1 bg-blue-200 h-full"></div>
+        <div class="space-y-12">
+          <div class="motion-div flex flex-col md:flex-row items-center gap-8" data-motion="fadeInLeft">
+            <div class="w-full md:w-1/2 holo-card p-6 rounded-xl">
+              <h3 class="text-xl font-semibold mb-2">Dự án vận tải châu Á</h3>
+              <p class="text-gray-600">Tối ưu hóa tuyến vận tải từ Việt Nam đến Nhật Bản, giảm chi phí 20%.</p>
+            </div>
+            <div class="w-full md:w-1/2 parallax-bg" style="background-image: url('https://meta.com/case1.webp');"></div>
+          </div>
+          <div class="motion-div flex flex-col md:flex-row-reverse items-center gap-8" data-motion="fadeInRight">
+            <div class="w-full md:w-1/2 holo-card p-6 rounded-xl">
+              <h3 class="text-xl font-semibold mb-2">Tự động hóa kho bãi</h3>
+              <p class="text-gray-600">Triển khai kho thông minh tại Singapore, tăng hiệu suất 35%.</p>
+            </div>
+            <div class="w-full md:w-1/2 parallax-bg" style="background-image: url('https://meta.com/case2.webp');"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Membership Section -->
+  <section id="about" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Đội ngũ lãnh đạo</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="motion-div polaroid p-6 relative overflow-hidden" data-motion="fadeInLeft">
+          <img src="https://meta.com/team1.webp" alt="Nguyễn Văn An - CEO" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+          <h3 class="text-xl font-semibold text-center">Nguyễn Văn An</h3>
+          <p class="text-gray-600 text-center">Giám đốc điều hành</p>
+          <div class="bio-panel absolute inset-0 bg-white/90 p-4">
+            <p class="text-gray-600">20+ năm kinh nghiệm trong  toàn cầu, dẫn dắt chiến lược phát triển.</p>
+          </div>
+        </div>
+        <div class="motion-div polaroid p-6 relative overflow-hidden" data-motion="fadeInLeft" data-delay="0.2">
+          <img src="https://meta.com/team2.webp" alt="Trần Thị Bình - CFO" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+          <h3 class="text-xl font-semibold text-center">Trần Thị Bình</h3>
+          <p class="text-gray-600 text-center">Giám đốc tài chính</p>
+          <div class="bio-panel absolute inset-0 bg-white/90 p-4">
+            <p class="text-gray-600">15+ năm quản lý tài chính, tối ưu hóa chi phí hiệu quả.</p>
+          </div>
+        </div>
+        <div class="motion-div polaroid p-6 relative overflow-hidden" data-motion="fadeInLeft" data-delay="0.4">
+          <img src="https://meta.com/team3.webp" alt="Lê Minh Châu - COO" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+          <h3 class="text-xl font-semibold text-center">Lê Minh Châu</h3>
+          <p class="text-gray-600 text-center">Giám đốc vận hành</p>
+          <div class="bio-panel absolute inset-0 bg-white/90 p-4">
+            <p class="text-gray-600">18+ năm kinh nghiệm, đảm bảo vận hành trơn tru.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Stack Section -->
+  <section id="tech-stack" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Công nghệ tiên phong</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="motion-div hexagon bg-blue-100 p-6 flex items-center justify-center" data-motion="fadeIn">
+          <img src="https://meta.com/tech1.webp" alt="AI " class="h-16">
+        </div>
+        <div class="motion-div hexagon bg-blue-100 p-6 flex items-center justify-center" data-motion="fadeIn" data-delay="0.2">
+          <img src="https://meta.com/tech2.webp" alt="Blockchain" class="h-16">
+        </div>
+        <div class="motion-div hexagon bg-blue-100 p-6 flex items-center justify-center" data-motion="fadeIn" data-delay="0.4">
+          <img src="https://meta.com/tech3.webp" alt="IoT" class="h-16">
+        </div>
+        <div class="motion-div hexagon bg-blue-100 p-6 flex items-center justify-center" data-motion="fadeIn" data-delay="0.6">
+          <img src="https://meta.com/tech4.webp" alt="Cloud Computing" class="h-16">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Metrics Section -->
+  <section id="metrics" class="py-20 bg-gradient-to-r from-blue-600 to-blue-400 text-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Thành tựu nổi bật</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="motion-div relative p-6 rounded-xl" data-motion="counter">
+          <div class="orb absolute inset-0 -z-10"></div>
+          <h3 class="text-4xl font-bold" data-counter="10000">10,000+</h3>
+          <p class="text-lg">Container vận chuyển</p>
+        </div>
+        <div class="motion-div relative p-6 rounded-xl" data-motion="counter" data-delay="0.2">
+          <div class="orb absolute inset-0 -z-10"></div>
+          <h3 class="text-4xl font-bold" data-counter="50">50+</h3>
+          <p class="text-lg">Quốc gia phục vụ</p>
+        </div>
+        <div class="motion-div relative p-6 rounded-xl" data-motion="counter" data-delay="0.4">
+          <div class="orb absolute inset-0 -z-10"></div>
+          <h3 class="text-4xl font-bold" data-counter="200">200+</h3>
+          <p class="text-lg">Đối tác toàn cầu</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners Section -->
+  <section id="partners" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Đối tác chiến lược</h2>
+      <div class="overflow-hidden perspective-1000">
+        <div class="marquee flex space-x-8" style="width: 200%; transform-style: preserve-3d;">
+          <img src="https://meta.com/partner1.webp" alt="Đối tác Maersk" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500 transform hover:scale-110">
+          <img src="https://meta.com/partner2.webp" alt="Đối tác DHL" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500 transform hover:scale-110">
+          <img src="https://meta.com/partner3.webp" alt="Đối tác FedEx" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500 transform hover:scale-110">
+          <img src="https://meta.com/partner4.webp" alt="Đối tác UPS" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500 transform hover:scale-110">
+          <img src="https://meta.com/partner1.webp" alt="Đối tác Maersk" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500 transform hover:scale-110">
+          <img src="https://meta.com/partner2.webp" alt="Đối tác DHL" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500 transform hover:scale-110">
+          <img src="https://meta.com/partner3.webp" alt="Đối tác FedEx" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500 transform hover:scale-110">
+          <img src="https://meta.com/partner4.webp" alt="Đối tác UPS" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500 transform hover:scale-110">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 bg-gray-50 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute w-16 h-16 bg-contain animate-[float_10s_ease-in-out_infinite]" style="background-image: url('https://meta.com/container-icon.webp'); top: 10%; left: 20%;"></div>
+      <div class="absolute w-16 h-16 bg-contain animate-[float_12s_ease-in-out_infinite]" style="background-image: url('https://meta.com/ship-icon.webp'); top: 60%; right: 15%;"></div>
+    </div>
+    <div class="container mx-auto px-4 relative">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Liên hệ với chúng tôi</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="motion-div" data-motion="fadeInLeft">
+          <h3 class="text-xl font-semibold mb-4">Thông tin liên hệ</h3>
+          <p class="text-gray-600 mb-2"><strong>Email:</strong> contact@meta.com</p>
+          <p class="text-gray-600 mb-2"><strong>Phone:</strong> +84 123 456 789</p>
+          <p class="text-gray-600 mb-2"><strong>Address:</strong> 123 Đường , Quận 1, TP.HCM, Việt Nam</p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-blue-600 hover:text-blue-800 hover:scale-110 transition ease-in-out duration-300">Facebook</a>
+            <a href="#" class="text-blue-600 hover:text-blue-800 hover:scale-110 transition ease-in-out duration-300">LinkedIn</a>
+          </div>
+        </div>
+        <div class="motion-div holo-card p-6 rounded-xl shadow-lg" data-motion="fadeInRight">
+          <h3 class="text-xl font-semibold mb-4">Gửi yêu cầu của bạn</h3>
+          <input type="text" placeholder="Họ tên" class="w-full p-3 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80">
+          <input type="email" placeholder="Email" class="w-full p-3 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80">
+          <textarea placeholder="Nội dung yêu cầu" class="w-full p-3 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80 h-32"></textarea>
+          <button class="btn-glow text-white px-6 py-3 rounded-lg w-full shadow-lg">Gửi yêu cầu</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-12 relative overflow-hidden">
+    <div class="absolute inset-0 map-bg"></div>
+    <div class="container mx-auto px-4 relative">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-semibold mb-4 gradient-text"> Meta</h3>
+          <p class="text-gray-200">Giải pháp  toàn cầu với công nghệ tiên tiến, an toàn và bền vững.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Liên kết nhanh</h3>
+          <ul class="space-y-2">
+            <li><a href="#services" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Dịch vụ</a></li>
+            <li><a href="#about" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Giới thiệu</a></li>
+            <li><a href="#case-studies" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Dự án</a></li>
+            <li><a href="#contact" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Liên hệ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Văn phòng</h3>
+          <div class="flex space-x-4">
+            <a href="#" class="pin text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">TP.HCM</a>
+            <a href="#" class="pin text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Singapore</a>
+            <a href="#" class="pin text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Tokyo</a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <p class="text-gray-200">© 2025  Meta. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sitemap -->
+  <sitemap>
+    <url>
+      <loc>https://meta.com/vi/</loc>
+      <lastmod>2025-04-26</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
+    </url>
+    <url>
+      <loc>https://meta.com/en/</loc>
+      <lastmod>2025-04-26</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
+    </url>
+    <url>
+      <loc>https://meta.com/services</loc>
+      <lastmod>2025-04-26</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>https://meta.com/about</loc>
+      <lastmod>2025-04-26</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>https://meta.com/case-studies</loc>
+      <lastmod>2025-04-26</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>https://meta.com/tech-stack</loc>
+      <lastmod>2025-04-26</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>https://meta.com/contact</loc>
+      <lastmod>2025-04-26</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+    </url>
+  </sitemap>
+
+  <!-- JavaScript -->
+  <script>
+    // Preloader
+    window.addEventListener('load', () => {
+      document.getElementById('preloader').style.display = 'none';
+    });
+
+    // Mobile Menu Toggle
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Vanilla Tilt for Cards
+    VanillaTilt.init(document.querySelectorAll('.tilt-card'), {
+      max: 10,
+      speed: 400,
+      glare: true,
+      'max-glare': 0.3
+    });
+
+    // Framer Motion Animations
+    const motionDivs = document.querySelectorAll('.motion-div');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const motionType = entry.target.dataset.motion;
+          const delay = entry.target.dataset.delay || 0;
+          if (motionType === 'fadeIn') {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+            entry.target.style.transitionDelay = `${delay}s`;
+          } else if (motionType === 'slideUp') {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+            entry.target.style.transitionDelay = `${delay}s`;
+          } else if (motionType === 'fadeInLeft') {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateX(0)';
+            entry.target.style.transitionDelay = `${delay}s`;
+          } else if (motionType === 'fadeInRight') {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateX(0)';
+            entry.target.style.transitionDelay = `${delay}s`;
+          } else if (motionType === 'counter') {
+            const updateCounter = () => {
+              const target = +entry.target.querySelector('[data-counter]').dataset.counter.replace(/[^0-9]/g, '');
+              const count = +entry.target.querySelector('[data-counter]').innerText.replace(/[^0-9]/g, '');
+              const increment = target / 200;
+              if (count < target) {
+                entry.target.querySelector('[data-counter]').innerText = `${Math.ceil(count + increment)}+`;
+                setTimeout(updateCounter, 20);
+              } else {
+                entry.target.querySelector('[data-counter]').innerText = entry.target.querySelector('[data-counter]').dataset.counter;
+              }
+            };
+            updateCounter();
+          }
+        }
+      });
+    }, { threshold: 0.2 });
+
+    motionDivs.forEach(div => {
+      div.style.opacity = 0;
+      div.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+      if (div.dataset.motion === 'slideUp') {
+        div.style.transform = 'translateY(50px)';
+      } else if (div.dataset.motion === 'fadeInLeft') {
+        div.style.transform = 'translateX(-50px)';
+      } else if (div.dataset.motion === 'fadeInRight') {
+        div.style.transform = 'translateX(50px)';
+      }
+      observer.observe(div);
+    });
+
+    // Parallax Background
+    const parallaxBgs = document.querySelectorAll('.parallax-bg');
+    window.addEventListener('scroll', () => {
+      parallaxBgs.forEach(bg => {
+        const rect = bg.getBoundingClientRect();
+        const scrollPosition = window.scrollY;
+        bg.style.backgroundPositionY = `${scrollPosition * 0.2}px`;
+      });
+    });
+
+    // Language Switcher
+    document.getElementById('language').addEventListener('change', (e) => {
+      window.location.href = `/${e.target.value}/`;
+    });
+  </script>
+</body>
+</html>

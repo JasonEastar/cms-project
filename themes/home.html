@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content=" Meta - Nhà cung cấp giải pháp  toàn cầu chuyên nghiệp, cung cấp dịch vụ vận tải biển, kho bãi, và quản lý chuỗi cung ứng với công nghệ tiên tiến.">
+  <meta name="keywords" content=", vận tải biển, kho bãi, chuỗi cung ứng, vận chuyển quốc tế,  toàn cầu">
+  <meta name="author" content=" Meta">
+  <title> Meta - Giải pháp  Toàn cầu</title>
+
+  <!-- SEO: Hreflang cho đa ngôn ngữ -->
+  <link rel="alternate" hreflang="vi" href="https://meta.com/vi/" />
+  <link rel="alternate" hreflang="en" href="https://meta.com/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://meta.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content=" Meta - Giải pháp  Toàn cầu">
+  <meta property="og:description" content="Dịch vụ vận tải biển, kho bãi, và quản lý chuỗi cung ứng với công nghệ tiên tiến.">
+  <meta property="og:image" content="https://meta.com/og-image.webp">
+  <meta property="og:url" content="https://meta.com/">
+  <meta property="og:type" content="website">
+
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": " Meta",
+    "url": "https://meta.com",
+    "logo": "https://meta.com/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+84-123-456-789",
+      "contactType": "Customer Service",
+      "email": "contact@meta.com"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "123 Đường ",
+      "addressLocality": "TP.HCM",
+      "addressCountry": "VN"
+    }
+  }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- Preload Hero Image và Font -->
+  <link rel="preload" href="https://meta.com/hero-sea-port.webp" as="image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Framer Motion CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.16.4/motion.umd.min.js"></script>
+
+  <!-- Swiper.js CDN cho carousel -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Smooth Scroll Polyfill -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
+      @apply bg-gray-50;
+    }
+    /* Lazy-load images */
+    img {
+      loading: lazy;
+    }
+    /* Parallax effect for hero */
+    .hero-bg {
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      @apply transition-transform duration-700 ease-in-out;
+    }
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(90deg, #0077B6, #00B4D8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    /* 3D hover effect for cards */
+    .card-3d {
+      transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+    }
+    .card-3d:hover {
+      transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    /* Micro-interaction cho nút */
+    .btn-gradient {
+      background: linear-gradient(90deg, #0077B6, #00B4D8);
+      transition: background 0.5s ease-in-out, transform 0.3s ease-in-out;
+    }
+    .btn-gradient:hover {
+      background: linear-gradient(90deg, #00B4D8, #0077B6);
+      transform: translateY(-2px);
+    }
+    /* Optimize animations for mobile */
+    @media (max-width: 640px) {
+      .motion-div {
+        transition-duration: 0.3s !important;
+      }
+      .hero-bg {
+        background-attachment: scroll;
+      }
+      .card-3d:hover {
+        transform: translateY(-5px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-50">
+    <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="/" class="text-2xl font-bold gradient-text"> Meta</a>
+      <div class="flex items-center space-x-6">
+        <ul class="hidden md:flex space-x-6">
+          <li><a href="#home" class="text-gray-700 hover:text-blue-600 transition ease-in-out duration-300">Trang chủ</a></li>
+          <li><a href="#services" class="text-gray-700 hover:text-blue-600 transition ease-in-out duration-300">Dịch vụ</a></li>
+          <li><a href="#about" class="text-gray-700 hover:text-blue-600 transition ease-in-out duration-300">Giới thiệu</a></li>
+          <li><a href="#contact" class="text-gray-700 hover:text-blue-600 transition ease-in-out duration-300">Liên hệ</a></li>
+        </ul>
+        <!-- Ngôn ngữ -->
+        <select id="language" class="border rounded-lg px-3 py-1 bg-blue-50 text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <option value="vi">Tiếng Việt</option>
+          <option value="en">English</option>
+        </select>
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-menu-toggle" class="md:hidden focus:outline-none">
+          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-md">
+      <ul class="flex flex-col space-y-4 p-4">
+        <li><a href="#home" class="text-gray-700 hover:text-blue-600">Trang chủ</a></li>
+        <li><a href="#services" class="text-gray-700 hover:text-blue-600">Dịch vụ</a></li>
+        <li><a href="#about" class="text-gray-700 hover:text-blue-600">Giới thiệu</a></li>
+        <li><a href="#contact" class="text-gray-700 hover:text-blue-600">Liên hệ</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="relative h-screen hero-bg" style="background-image: url('https://meta.com/hero-sea-port.webp')">
+    <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-600/50 flex items-center justify-center">
+      <div class="text-center text-white px-4 max-w-4xl">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 gradient-text motion-div" data-motion="fadeIn">Tăng tốc chuỗi cung ứng toàn cầu</h1>
+        <p class="text-lg md:text-xl mb-6 motion-div" data-motion="fadeIn" data-delay="0.2"> Meta cung cấp giải pháp vận tải biển, kho bãi, và quản lý chuỗi cung ứng với công nghệ tiên tiến, đảm bảo hiệu quả và bền vững.</p>
+        <a href="#services" class="inline-block btn-gradient text-white px-8 py-3 rounded-full shadow-lg motion-div" data-motion="fadeIn" data-delay="0.4">Khám phá dịch vụ</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Section (Swiper Carousel) -->
+  <section id="news" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Tin tức & Sự kiện</h2>
+      <div class="swiper news-slider">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide motion-div bg-gray-50 p-6 rounded-xl shadow-lg card-3d" data-motion="fadeIn">
+            <img src="https://meta.com/news1.webp" alt="Mở tuyến vận tải mới châu Âu" class="w-full h-48 object-cover rounded-md mb-4">
+            <h3 class="text-xl font-semibold mb-2">Mở tuyến vận tải mới đến châu Âu</h3>
+            <p class="text-gray-600">Chúng tôi tự hào khai thác tuyến vận tải mới với thời gian giao hàng nhanh hơn 30%.</p>
+          </div>
+          <div class="swiper-slide motion-div bg-gray-50 p-6 rounded-xl shadow-lg card-3d" data-motion="fadeIn">
+            <img src="https://meta.com/news2.webp" alt="Công nghệ AI trong " class="w-full h-48 object-cover rounded-md mb-4">
+            <h3 class="text-xl font-semibold mb-2">Ứng dụng AI trong quản lý </h3>
+            <p class="text-gray-600">Tăng hiệu suất kho bãi lên 40% nhờ công nghệ AI tối ưu hóa.</p>
+          </div>
+          <div class="swiper-slide motion-div bg-gray-50 p-6 rounded-xl shadow-lg card-3d" data-motion="fadeIn">
+            <img src="https://meta.com/news3.webp" alt="Hợp tác với đối tác toàn cầu" class="w-full h-48 object-cover rounded-md mb-4">
+            <h3 class="text-xl font-semibold mb-2">Hợp tác với đối tác toàn cầu</h3>
+            <p class="text-gray-600">Ký kết hợp tác chiến lược với các tập đoàn  hàng đầu thế giới.</p>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Dịch vụ của chúng tôi</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="motion-div bg-white p-6 rounded-xl shadow-lg card-3d" data-motion="slideUp">
+          <img src="https://meta.com/service1.webp" alt="Vận tải biển quốc tế" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Vận tải biển quốc tế</h3>
+          <p class="text-gray-600">Dịch vụ vận tải biển đáng tin cậy, đảm bảo giao hàng đúng hạn đến hơn 50 quốc gia.</p>
+        </div>
+        <div class="motion-div bg-white p-6 rounded-xl shadow-lg card-3d" data-motion="slideUp" data-delay="0.2">
+          <img src="https://meta.com/service2.webp" alt="Quản lý kho bãi" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Quản lý kho bãi</h3>
+          <p class="text-gray-600">Giải pháp kho bãi thông minh với công nghệ tự động hóa và theo dõi thời gian thực.</p>
+        </div>
+        <div class="motion-div bg-white p-6 rounded-xl shadow-lg card-3d" data-motion="slideUp" data-delay="0.4">
+          <img src="https://meta.com/service3.webp" alt="Chuỗi cung ứng toàn cầu" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Chuỗi cung ứng toàn cầu</h3>
+          <p class="text-gray-600">Tối ưu hóa chuỗi cung ứng với các giải pháp tích hợp và bền vững.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Membership Section -->
+  <section id="about" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Đội ngũ lãnh đạo</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="motion-div bg-gray-50 p-6 rounded-xl shadow-lg" data-motion="fadeInLeft">
+          <img src="https://meta.com/team1.webp" alt="Nguyễn Văn An - CEO" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+          <h3 class="text-xl font-semibold text-center">Nguyễn Văn An</h3>
+          <p class="text-gray-600 text-center">Giám đốc điều hành</p>
+          <p class="text-gray-600 text-center mt-2">Hơn 20 năm kinh nghiệm trong ngành  toàn cầu.</p>
+        </div>
+        <div class="motion-div bg-gray-50 p-6 rounded-xl shadow-lg" data-motion="fadeInLeft" data-delay="0.2">
+          <img src="https://meta.com/team2.webp" alt="Trần Thị Bình - CFO" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+          <h3 class="text-xl font-semibold text-center">Trần Thị Bình</h3>
+          <p class="text-gray-600 text-center">Giám đốc tài chính</p>
+          <p class="text-gray-600 text-center mt-2">Chuyên gia tài chính với 15 năm quản lý chiến lược.</p>
+        </div>
+        <div class="motion-div bg-gray-50 p-6 rounded-xl shadow-lg" data-motion="fadeInLeft" data-delay="0.4">
+          <img src="https://meta.com/team3.webp" alt="Lê Minh Châu - COO" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+          <h3 class="text-xl font-semibold text-center">Lê Minh Châu</h3>
+          <p class="text-gray-600 text-center">Giám đốc vận hành</p>
+          <p class="text-gray-600 text-center mt-2">Lãnh đạo vận hành với hơn 18 năm kinh nghiệm.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Metrics Section -->
+  <section id="metrics" class="py-20 bg-gradient-to-r from-blue-600 to-blue-400 text-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Thành tựu nổi bật</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="motion-div" data-motion="counter">
+          <h3 class="text-4xl font-bold" data-counter="10000">10,000+</h3>
+          <p class="text-lg">Container vận chuyển</p>
+        </div>
+        <div class="motion-div" data-motion="counter" data-delay="0.2">
+          <h3 class="text-4xl font-bold" data-counter="50">50+</h3>
+          <p class="text-lg">Quốc gia phục vụ</p>
+        </div>
+        <div class="motion-div" data-motion="counter" data-delay="0.4">
+          <h3 class="text-4xl font-bold" data-counter="200">200+</h3>
+          <p class="text-lg">Đối tác toàn cầu</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners Section -->
+  <section id="partners" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Đối tác chiến lược</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="motion-div flex justify-center" data-motion="fadeIn">
+          <img src="https://meta.com/partner1.webp" alt="Đối tác Maersk" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500">
+        </div>
+        <div class="motion-div flex justify-center" data-motion="fadeIn" data-delay="0.2">
+          <img src="https://meta.com/partner2.webp" alt="Đối tác DHL" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500">
+        </div>
+        <div class="motion-div flex justify-center" data-motion="fadeIn" data-delay="0.4">
+          <img src="https://meta.com/partner3.webp" alt="Đối tác FedEx" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500">
+        </div>
+        <div class="motion-div flex justify-center" data-motion="fadeIn" data-delay="0.6">
+          <img src="https://meta.com/partner4.webp" alt="Đối tác UPS" class="h-16 opacity-70 hover:opacity-100 transition ease-in-out duration-500">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Liên hệ với chúng tôi</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="motion-div" data-motion="fadeInLeft">
+          <h3 class="text-xl font-semibold mb-4">Thông tin liên hệ</h3>
+          <p class="text-gray-600 mb-2"><strong>Email:</strong> contact@meta.com</p>
+          <p class="text-gray-600 mb-2"><strong>Phone:</strong> +84 123 456 789</p>
+          <p class="text-gray-600 mb-2"><strong>Address:</strong> 123 Đường , Quận 1, TP.HCM, Việt Nam</p>
+          <div class="flex space-x-4 mt-4">
+            <a href="#" class="text-blue-600 hover:text-blue-800 transition ease-in-out duration-300">Facebook</a>
+            <a href="#" class="text-blue-600 hover:text-blue-800 transition ease-in-out duration-300">LinkedIn</a>
+          </div>
+        </div>
+        <div class="motion-div" data-motion="fadeInRight">
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h3 class="text-xl font-semibold mb-4">Gửi yêu cầu của bạn</h3>
+            <input type="text" placeholder="Họ tên" class="w-full p-3 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <input type="email" placeholder="Email" class="w-full p-3 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <textarea placeholder="Nội dung yêu cầu" class="w-full p-3 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 h-32"></textarea>
+            <button class="btn-gradient text-white px-6 py-3 rounded-lg w-full shadow-lg">Gửi yêu cầu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-semibold mb-4 gradient-text"> Meta</h3>
+          <p class="text-gray-200">Chúng tôi cung cấp giải pháp  toàn cầu với công nghệ tiên tiến, đảm bảo hiệu quả, an toàn và bền vững.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Liên kết nhanh</h3>
+          <ul class="space-y-2">
+            <li><a href="#services" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Dịch vụ</a></li>
+            <li><a href="#about" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Giới thiệu</a></li>
+            <li><a href="#contact" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Liên hệ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Theo dõi chúng tôi</h3>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Facebook</a>
+            <a href="#" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">LinkedIn</a>
+            <a href="#" class="text-gray-200 hover:text-blue-300 transition ease-in-out duration-300">Twitter</a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <p class="text-gray-200">© 2025  Meta. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript cho Framer Motion, Swiper, Counter Animation, và Mobile Menu -->
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Khởi tạo Swiper cho News Carousel
+    const swiper = new Swiper('.news-slider', {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 3,
+        },
+      },
+    });
+
+    // Framer Motion animation khi scroll
+    const motionDivs = document.querySelectorAll('.motion-div');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const motionType = entry.target.dataset.motion;
+          const delay = entry.target.dataset.delay || 0;
+          if (motionType === 'fadeIn') {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+            entry.target.style.transitionDelay = `${delay}s`;
+          } else if (motionType === 'slideUp') {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+            entry.target.style.transitionDelay = `${delay}s`;
+          } else if (motionType === 'fadeInLeft') {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateX(0)';
+            entry.target.style.transitionDelay = `${delay}s`;
+          } else if (motionType === 'fadeInRight') {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateX(0)';
+            entry.target.style.transitionDelay = `${delay}s`;
+          }
+        }
+      });
+    }, { threshold: 0.2 });
+
+    motionDivs.forEach(div => {
+      div.style.opacity = 0;
+      div.style.transition = 'opacity 0.6s ease-in-out, transform 0.6s ease-in-out';
+      if (div.dataset.motion === 'slideUp') {
+        div.style.transform = 'translateY(50px)';
+      } else if (div.dataset.motion === 'fadeInLeft') {
+        div.style.transform = 'translateX(-50px)';
+      } else if (div.dataset.motion === 'fadeInRight') {
+        div.style.transform = 'translateX(50px)';
+      }
+      observer.observe(div);
+    });
+
+    // Counter Animation
+    const counters = document.querySelectorAll('[data-counter]');
+    counters.forEach(counter => {
+      const updateCounter = () => {
+        const target = +counter.dataset.counter.replace(/[^0-9]/g, '');
+        const count = +counter.innerText.replace(/[^0-9]/g, '');
+        const increment = target / 200;
+        if (count < target) {
+          counter.innerText = `${Math.ceil(count + increment)}+`;
+          setTimeout(updateCounter, 20);
+        } else {
+          counter.innerText = counter.dataset.counter;
+        }
+      };
+      observer.observe(counter);
+      updateCounter();
+    });
+
+    // Đổi ngôn ngữ (logic cơ bản)
+    document.getElementById('language').addEventListener('change', (e) => {
+      window.location.href = `/${e.target.value}/`;
+    });
+  </script>
+</body>
+</html>
