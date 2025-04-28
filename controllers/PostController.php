@@ -17,7 +17,7 @@ class PostController
     public function __construct()
     {
         $this->postModel = new Post();
-        $this->languageModel = new Language();
+        $this->languageModel = new LanguageModel();
         $this->categoryModel = new Category();
     }
 

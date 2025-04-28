@@ -13,7 +13,7 @@ class CategoryController {
     
     public function __construct() {
         $this->categoryModel = new Category();
-        $this->languageModel = new Language();
+        $this->languageModel = new LanguageModel();
     }
     
     // Phương thức lấy tất cả danh mục theo ngôn ngữ

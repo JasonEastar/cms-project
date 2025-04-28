@@ -14,7 +14,7 @@ class Category {
     // Khởi tạo kết nối database
     public function __construct() {
         $this->db = Database::getInstance();
-        $this->languageModel = new Language();
+        $this->languageModel = new LanguageModel();
     }
     
     // Phương thức tìm danh mục theo ID với thông tin ngôn ngữ

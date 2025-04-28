@@ -1,7 +1,5 @@
 <?php
 // models/Post.php
-// Model xử lý dữ liệu bảng posts với đa ngôn ngữ
-
 require_once __DIR__ . '/../utils/Database.php';
 require_once __DIR__ . '/Language.php';
 
@@ -15,10 +13,9 @@ class Post
     public function __construct()
     {
         $this->db = Database::getInstance();
-        $this->languageModel = new Language();
+        $this->languageModel = new LanguageModel();
     }
 
-    // Tìm bài viết theo ID với thông tin ngôn ngữ
     public function findById($id, $languageCode = null)
     {
         if (!$languageCode) {
@@ -38,7 +35,6 @@ class Post
         return $this->db->fetchOne($query, [$id, $languageCode]);
     }
 
-    // Tìm bài viết theo slug và ngôn ngữ
     public function findBySlug($slug, $languageCode = null)
     {
         if (!$languageCode) {
@@ -58,7 +54,6 @@ class Post
         return $this->db->fetchOne($query, [$slug, $languageCode]);
     }
 
-    // Lấy tất cả bài viết theo ngôn ngữ
     public function getAllByLang($languageCode = null, $filters = [])
     {
         if (!$languageCode) {
@@ -69,17 +64,14 @@ class Post
         $params = [$languageCode];
         $conditions = ["l.code = ?"];
 
-        // Xử lý filters
         if (isset($filters['category_id'])) {
             $conditions[] = "p.category_id = ?";
             $params[] = $filters['category_id'];
         }
-
         if (isset($filters['is_active'])) {
             $conditions[] = "p.is_active = ?";
             $params[] = $filters['is_active'];
         }
-
         if (isset($filters['is_featured'])) {
             $conditions[] = "p.is_featured = ?";
             $params[] = $filters['is_featured'];
@@ -100,18 +92,15 @@ class Post
         return $this->db->fetchAll($query, $params);
     }
 
-    // Tạo bài viết mới
     public function create($data)
     {
         $this->db->beginTransaction();
 
         try {
-            // Tạo code nếu chưa có
             if (!isset($data['code']) || empty($data['code'])) {
                 $data['code'] = $this->generateUniqueCode($data['translations'][0]['title'] ?? 'post');
             }
 
-            // Dữ liệu bài viết
             $postData = [
                 'code' => $data['code'],
                 'category_id' => $data['category_id'] ?? null,
@@ -122,10 +111,8 @@ class Post
                 'views' => 0
             ];
 
-            // Thêm bài viết vào database
             $postId = $this->db->insert($this->table, $postData);
 
-            // Thêm các bản dịch
             if (isset($data['translations'])) {
                 foreach ($data['translations'] as $translation) {
                     $language = $this->languageModel->findByCode($translation['language_code']);
@@ -133,7 +120,6 @@ class Post
                         throw new Exception("Ngôn ngữ không tồn tại: " . $translation['language_code']);
                     }
 
-                    // Tạo slug nếu chưa có
                     if (!isset($translation['slug']) || empty($translation['slug'])) {
                         $translation['slug'] = $this->createSlug($translation['title'], $language['id']);
                     }
@@ -161,13 +147,11 @@ class Post
         }
     }
 
-    // Cập nhật bài viết
     public function update($id, $data)
     {
         $this->db->beginTransaction();
 
         try {
-            // Cập nhật thông tin bài viết
             $postData = [];
             if (isset($data['category_id'])) $postData['category_id'] = $data['category_id'];
             if (isset($data['thumbnail'])) $postData['thumbnail'] = $data['thumbnail'];
@@ -179,7 +163,6 @@ class Post
                 $this->db->update($this->table, $postData, 'id = ?', [$id]);
             }
 
-            // Cập nhật các bản dịch
             if (isset($data['translations'])) {
                 foreach ($data['translations'] as $translation) {
                     $language = $this->languageModel->findByCode($translation['language_code']);
@@ -187,7 +170,6 @@ class Post
                         throw new Exception("Ngôn ngữ không tồn tại: " . $translation['language_code']);
                     }
 
-                    // Kiểm tra xem bản dịch đã tồn tại chưa
                     $existingTranslation = $this->db->fetchOne(
                         "SELECT id FROM {$this->translationTable} 
                          WHERE post_id = ? AND language_id = ?",
@@ -204,7 +186,6 @@ class Post
                     ];
 
                     if ($existingTranslation) {
-                        // Cập nhật
                         $this->db->update(
                             $this->translationTable,
                             $translationData,
@@ -212,7 +193,6 @@ class Post
                             [$id, $language['id']]
                         );
                     } else {
-                        // Thêm mới
                         $translationData['post_id'] = $id;
                         $translationData['language_id'] = $language['id'];
                         $this->db->insert($this->translationTable, $translationData);
@@ -228,13 +208,22 @@ class Post
         }
     }
 
-    // Xóa bài viết
     public function delete($id)
     {
-        return $this->db->delete($this->table, 'id = ?', [$id]);
+        $this->db->beginTransaction();
+        try {
+            // Xóa bản dịch
+            $this->db->query("DELETE FROM {$this->translationTable} WHERE post_id = ?", [$id]);
+            // Xóa bài viết
+            $this->db->delete($this->table, 'id = ?', [$id]);
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollback();
+            throw $e;
+        }
     }
 
-    // Tạo slug từ tiêu đề
     private function createSlug($title, $languageId)
     {
         $slug = strtolower($title);
@@ -248,23 +237,16 @@ class Post
         $slug = preg_replace('/(ỳ|ý|ỵ|ỷ|ỹ)/', 'y', $slug);
         $slug = preg_replace('/(đ)/', 'd', $slug);
 
-        // Loại bỏ các ký tự đặc biệt
         $slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
-
-        // Thay thế khoảng trắng bằng dấu gạch ngang
         $slug = preg_replace('/[\s-]+/', '-', $slug);
-
-        // Loại bỏ dấu gạch ngang ở đầu và cuối
         $slug = trim($slug, '-');
 
-        // Kiểm tra slug đã tồn tại chưa
         $existingPost = $this->db->fetchOne(
             "SELECT id FROM {$this->translationTable} 
              WHERE slug = ? AND language_id = ?",
             [$slug, $languageId]
         );
 
-        // Nếu slug đã tồn tại, thêm số vào cuối
         if ($existingPost) {
             $i = 1;
             do {
@@ -276,21 +258,18 @@ class Post
                 );
                 $i++;
             } while ($existingPost);
-
             $slug = $newSlug;
         }
 
         return $slug;
     }
 
-    // Tạo code unique
     private function generateUniqueCode($title)
     {
         $code = strtolower($title);
         $code = preg_replace('/[^a-z0-9]+/', '-', $code);
         $code = trim($code, '-');
 
-        // Kiểm tra code đã tồn tại chưa
         $existingPost = $this->db->fetchOne(
             "SELECT id FROM {$this->table} WHERE code = ?",
             [$code]
@@ -306,14 +285,12 @@ class Post
                 );
                 $i++;
             } while ($existingPost);
-
             $code = $newCode;
         }
 
         return $code;
     }
 
-    // Lấy tất cả bản dịch của một bài viết
     public function getAllTranslations($id)
     {
         $query = "SELECT t.*, l.code as language_code, l.name as language_name
@@ -324,11 +301,9 @@ class Post
         return $this->db->fetchAll($query, [$id]);
     }
 
-    // Tăng lượt xem
-    public function incrementViews($id) {
-       
-            // Hoặc nếu không có getConnection(), thử với fetch
-            $query = "UPDATE {$this->table} SET views = views + 1 WHERE id = ?";
-            return $this->db->query($query, [$id]);
+    public function incrementViews($id)
+    {
+        $query = "UPDATE {$this->table} SET views = views + 1 WHERE id = ?";
+        return $this->db->query($query, [$id]);
     }
 }

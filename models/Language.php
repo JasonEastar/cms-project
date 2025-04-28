@@ -4,7 +4,7 @@
 
 require_once __DIR__ . '/../utils/Database.php';
 
-class Language {
+class LanguageModel {
     private $db;
     private $table = 'languages';
     

@@ -10,7 +10,7 @@ class LanguageController {
     private $languageModel;
     
     public function __construct() {
-        $this->languageModel = new Language();
+        $this->languageModel = new LanguageModel();
     }
     
     // Phương thức lấy tất cả ngôn ngữ

@@ -18,7 +18,7 @@ class SectionController
     {
         $this->sectionModel = new Section();
         $this->sectionItemModel = new SectionItem();
-        $this->languageModel = new Language();
+        $this->languageModel = new LanguageModel();
     }
 
    // Cập nhật phương thức getById()

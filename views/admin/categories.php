@@ -1,8 +1,41 @@
 <?php
 // views/admin/categories.php
-// Giao diện quản lý danh mục với hỗ trợ đa ngôn ngữ
+// Giao diện quản lý danh mục sử dụng PHP trực tiếp
 
 require_once __DIR__ . '/../../utils/Language.php';
+require_once __DIR__ . '/../../models/Category.php';
+require_once __DIR__ . '/../../models/Language.php';
+
+// Kiểm tra xác thực đăng nhập
+if (!isset($_COOKIE['admin_token'])) {
+    header('Location: login');
+    exit;
+}
+
+// Khởi tạo các models
+$categoryModel = new Category();
+$languageModel = new LanguageModel();
+
+// Lấy ngôn ngữ hiện tại
+$currentLang = isset($_COOKIE['admin_language']) ? $_COOKIE['admin_language'] : 'vi';
+
+// Xử lý xóa danh mục nếu có yêu cầu
+if (isset($_POST['action']) && $_POST['action'] === 'delete' && isset($_POST['id'])) {
+    try {
+        $categoryModel->delete($_POST['id']);
+        $_SESSION['message'] = ['type' => 'success', 'text' => __('categories.delete_success')];
+    } catch (Exception $e) {
+        $_SESSION['message'] = ['type' => 'error', 'text' => $e->getMessage()];
+    }
+    header('Location: categories');
+    exit;
+}
+
+// Lấy danh sách danh mục
+$categories = $categoryModel->getAllByLang($currentLang);
+
+// Lấy danh sách ngôn ngữ hoạt động
+$languages = $languageModel->getActive();
 
 $page_title = __('categories.title') . ' - ' . __('header.admin_cms');
 ob_start();
@@ -36,6 +69,9 @@ ob_start();
                 <select id="parent-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
                     <option value=""><?php echo __('categories.all_categories'); ?></option>
                     <option value="0"><?php echo __('categories.root_categories_only'); ?></option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?php echo $category['id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div>
@@ -78,16 +114,60 @@ ob_start();
                 </tr>
             </thead>
             <tbody id="categories-list" class="bg-white divide-y divide-gray-200">
-                <tr>
-                    <td colspan="6" class="px-6 py-12">
-                        <div class="flex flex-col items-center justify-center">
-                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                                <i class="fas fa-spinner fa-spin text-blue-600 text-2xl"></i>
+                <?php if (empty($categories)): ?>
+                    <tr>
+                        <td colspan="6" class="px-6 py-12">
+                            <div class="flex flex-col items-center justify-center">
+                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-folder-open text-gray-400 text-2xl"></i>
+                                </div>
+                                <p class="text-gray-500 font-medium"><?php echo __('common.no_data'); ?></p>
+                                <p class="text-gray-400 text-sm mt-1"><?php echo __('categories.create_first_category'); ?></p>
                             </div>
-                            <p class="text-gray-500 font-medium"><?php echo __('common.loading'); ?></p>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($categories as $category): ?>
+                        <?php
+                        $parentCategory = null;
+                        if ($category['parent_id']) {
+                            $parentCategory = $categoryModel->findById($category['parent_id'], $currentLang);
+                        }
+                        ?>
+                        <tr class="hover:bg-gray-50 transition-colors duration-150">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm font-medium text-gray-900">#<?php echo $category['id']; ?></span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($category['name']); ?></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="px-2 py-1 text-sm bg-gray-100 text-gray-700 rounded font-mono"><?php echo htmlspecialchars($category['code']); ?></code>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-600"><?php echo $parentCategory ? htmlspecialchars($parentCategory['name']) : '-'; ?></span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium <?php echo $category['is_active'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'; ?>">
+                                    <i class="fas fa-circle text-xs"></i>
+                                    <?php echo $category['is_active'] ? __('common.active') : __('common.inactive'); ?>
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
+                                <a href="category-edit?id=<?php echo $category['id']; ?>" class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-150">
+                                    <i class="fas fa-edit mr-1"></i>
+                                    <?php echo __('common.edit'); ?>
+                                </a>
+                                <button class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors duration-150 delete-category-btn" 
+                                        data-id="<?php echo $category['id']; ?>" 
+                                        data-name="<?php echo htmlspecialchars($category['name']); ?>">
+                                    <i class="fas fa-trash mr-1"></i>
+                                    <?php echo __('common.delete'); ?>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -113,9 +193,13 @@ ob_start();
                     <button type="button" class="flex-1 px-4 py-2.5 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200 close-modal">
                         <?php echo __('common.cancel'); ?>
                     </button>
-                    <button type="button" id="confirm-delete-btn" class="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
-                        <?php echo __('common.delete'); ?>
-                    </button>
+                    <form id="delete-form" method="POST" class="flex-1">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="id" id="delete-category-id">
+                        <button type="submit" class="w-full px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
+                            <?php echo __('common.delete'); ?>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -124,165 +208,25 @@ ob_start();
 
 <script>
 $(document).ready(function() {
-    const token = localStorage.getItem('admin_token');
-    let categories = [];
-    let currentLang = localStorage.getItem('admin_language') || 'vi';
-    
-    // Initialize
-    fetchCategories(currentLang);
+    // Dữ liệu categories đã có sẵn từ PHP
+    let categories = <?php echo json_encode($categories); ?>;
     
     // Event handlers
     $('.close-modal').click(closeModals);
-    $('#confirm-delete-btn').click(deleteCategory);
     $('#apply-filter-btn').click(applyFilters);
     
-    // Fetch categories
-    function fetchCategories(lang) {
-        showLoadingState();
-        
-        fetch(`../api/categories?lang=${lang}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                categories = data.data.categories || [];
-                renderCategories(categories);
-                updateParentCategoryOptions();
-            } else {
-                showErrorState(data.message || '<?php echo __('messages.error_loading'); ?>');
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching categories:', error);
-            showErrorState('<?php echo __('categories.connection_error'); ?>: ' + error.message);
-        });
-    }
-    
-    // Render categories table
-    function renderCategories(categoriesData) {
-        if (categoriesData.length === 0) {
-            $('#categories-list').html(`
-                <tr>
-                    <td colspan="6" class="px-6 py-12">
-                        <div class="flex flex-col items-center justify-center">
-                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                <i class="fas fa-folder-open text-gray-400 text-2xl"></i>
-                            </div>
-                            <p class="text-gray-500 font-medium"><?php echo __('common.no_data'); ?></p>
-                            <p class="text-gray-400 text-sm mt-1"><?php echo __('categories.create_first_category'); ?></p>
-                        </div>
-                    </td>
-                </tr>
-            `);
-            return;
-        }
-        
-        const rows = categoriesData.map(category => {
-            const parentCategory = categories.find(c => c.id === category.parent_id);
-            
-            return `
-                <tr class="hover:bg-gray-50 transition-colors duration-150">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="text-sm font-medium text-gray-900">#${category.id}</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">${category.name}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <code class="px-2 py-1 text-sm bg-gray-100 text-gray-700 rounded font-mono">${category.code}</code>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="text-sm text-gray-600">${parentCategory ? parentCategory.name : '-'}</span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${category.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
-                            <i class="fas fa-circle text-xs"></i>
-                            ${category.is_active ? '<?php echo __('common.active'); ?>' : '<?php echo __('common.inactive'); ?>'}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
-                        <a href="category-edit?id=${category.id}" class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-150">
-                            <i class="fas fa-edit mr-1"></i>
-                            <?php echo __('common.edit'); ?>
-                        </a>
-                        <button class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors duration-150 delete-category-btn" 
-                                data-id="${category.id}" 
-                                data-name="${category.name}">
-                            <i class="fas fa-trash mr-1"></i>
-                            <?php echo __('common.delete'); ?>
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-        
-        $('#categories-list').html(rows);
-        attachEventHandlers();
-    }
-    
-    // Update parent category options
-    function updateParentCategoryOptions() {
-        const parentFilter = $('#parent-filter');
-        
-        const options = categories.map(category => `
-            <option value="${category.id}">${category.name}</option>
-        `).join('');
-        
-        parentFilter.html(`
-            <option value=""><?php echo __('categories.all_categories'); ?></option>
-            <option value="0"><?php echo __('categories.root_categories_only'); ?></option>
-            ${options}
-        `);
-    }
-    
-    // Attach event handlers
-    function attachEventHandlers() {
-        $('.delete-category-btn').click(function() {
-            const categoryId = $(this).data('id');
-            const categoryName = $(this).data('name');
-            confirmDelete(categoryId, categoryName);
-        });
-    }
+    // Delete category button click
+    $('.delete-category-btn').click(function() {
+        const categoryId = $(this).data('id');
+        const categoryName = $(this).data('name');
+        confirmDelete(categoryId, categoryName);
+    });
     
     // Confirm delete
     function confirmDelete(categoryId, categoryName) {
         $('#delete-category-name').text(categoryName);
-        $('#confirm-delete-btn').data('id', categoryId);
+        $('#delete-category-id').val(categoryId);
         $('#delete-modal').removeClass('hidden');
-    }
-    
-    // Delete category
-    function deleteCategory() {
-        const categoryId = $(this).data('id');
-        const deleteBtn = $(this);
-        
-        deleteBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-2"></i><?php echo __('common.processing'); ?>');
-        
-        fetch(`../api/categories/${categoryId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.status === 'success') {
-                showToast('success', result.message || '<?php echo __('categories.delete_success'); ?>');
-                closeModals();
-                fetchCategories(currentLang);
-            } else {
-                showToast('error', result.message || '<?php echo __('categories.delete_error'); ?>');
-                deleteBtn.prop('disabled', false).html('<?php echo __('common.delete'); ?>');
-            }
-        })
-        .catch(error => {
-            console.error('Error deleting category:', error);
-            showToast('error', '<?php echo __('categories.connection_error'); ?>: ' + error.message);
-            deleteBtn.prop('disabled', false).html('<?php echo __('common.delete'); ?>');
-        });
     }
     
     // Apply filters
@@ -320,41 +264,74 @@ $(document).ready(function() {
         $('#delete-modal').addClass('hidden');
     }
     
-    // Show loading state
-    function showLoadingState() {
-        $('#categories-list').html(`
-            <tr>
-                <td colspan="6" class="px-6 py-12">
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 animate-pulse">
-                            <i class="fas fa-spinner fa-spin text-blue-600 text-2xl"></i>
+    // Render categories (client-side filtering)
+    function renderCategories(categoriesData) {
+        const tbody = $('#categories-list');
+        tbody.empty();
+        
+        if (categoriesData.length === 0) {
+            tbody.html(`
+                <tr>
+                    <td colspan="6" class="px-6 py-12">
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-folder-open text-gray-400 text-2xl"></i>
+                            </div>
+                            <p class="text-gray-500 font-medium"><?php echo __('common.no_data'); ?></p>
+                            <p class="text-gray-400 text-sm mt-1"><?php echo __('categories.create_first_category'); ?></p>
                         </div>
-                        <p class="text-gray-500 font-medium"><?php echo __('common.loading'); ?></p>
-                    </div>
-                </td>
-            </tr>
-        `);
-    }
-    
-    // Show error state
-    function showErrorState(message) {
-        $('#categories-list').html(`
-            <tr>
-                <td colspan="6" class="px-6 py-12">
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
-                        </div>
-                        <p class="text-gray-900 font-medium"><?php echo __('categories.error_occurred'); ?></p>
-                        <p class="text-gray-500 text-sm mt-1">${message}</p>
-                        <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                            <i class="fas fa-redo mr-2"></i>
-                            <?php echo __('categories.try_again'); ?>
+                    </td>
+                </tr>
+            `);
+            return;
+        }
+        
+        categoriesData.forEach(category => {
+            const parentCategory = categories.find(c => c.id === category.parent_id);
+            
+            const row = `
+                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm font-medium text-gray-900">#${category.id}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${category.name}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <code class="px-2 py-1 text-sm bg-gray-100 text-gray-700 rounded font-mono">${category.code}</code>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-600">${parentCategory ? parentCategory.name : '-'}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${category.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                            <i class="fas fa-circle text-xs"></i>
+                            ${category.is_active ? '<?php echo __('common.active'); ?>' : '<?php echo __('common.inactive'); ?>'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
+                        <a href="category-edit?id=${category.id}" class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-150">
+                            <i class="fas fa-edit mr-1"></i>
+                            <?php echo __('common.edit'); ?>
+                        </a>
+                        <button class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors duration-150 delete-category-btn" 
+                                data-id="${category.id}" 
+                                data-name="${category.name}">
+                            <i class="fas fa-trash mr-1"></i>
+                            <?php echo __('common.delete'); ?>
                         </button>
-                    </div>
-                </td>
-            </tr>
-        `);
+                    </td>
+                </tr>
+            `;
+            tbody.append(row);
+        });
+        
+        // Re-attach delete event handlers
+        $('.delete-category-btn').click(function() {
+            const categoryId = $(this).data('id');
+            const categoryName = $(this).data('name');
+            confirmDelete(categoryId, categoryName);
+        });
     }
 });
 </script>

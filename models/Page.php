@@ -15,7 +15,7 @@ class Page
     public function __construct()
     {
         $this->db = Database::getInstance();
-        $this->languageModel = new Language();
+        $this->languageModel = new LanguageModel();
     }
 
     // Tìm page theo ID với thông tin ngôn ngữ
